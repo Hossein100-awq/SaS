@@ -1,4 +1,48 @@
 @import "tailwindcss";
+
+:root {
+  --background: #0B1120;
+  --foreground: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
 body {
-  background-color: #0B1120;
+  min-height: 100%;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Typography */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+p {
+  font-weight: 400;
+}
+
+button {
+  font-family: inherit;
+  font-weight: 600;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
 }

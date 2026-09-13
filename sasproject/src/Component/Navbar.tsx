@@ -1,26 +1,72 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 
-const Navbar = () => {
-  const [open, setOpen] = useState(false);
+import { supabase } from "@/Lib/Supabase";
 
-  const closeMenu = () => setOpen(false);
+const Navbar = () => {
+  const router = useRouter();
+
+  const [open, setOpen] = useState(false);
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data } = await supabase.auth.getUser();
+
+      if (data.user) {
+        setUserName(
+          data.user.user_metadata?.full_name ||
+            data.user.email ||
+            "User"
+        );
+      }
+    };
+
+    getUser();
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (session?.user) {
+          setUserName(
+            session.user.user_metadata?.full_name ||
+              session.user.email ||
+              "User"
+          );
+        } else {
+          setUserName("");
+        }
+      }
+    );
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  const closeMenu = () => {
+    setOpen(false);
+  };
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+    setUserName("");
+    setOpen(false);
+    router.push("/");
+  };
 
   return (
     <nav className="relative z-50 w-full py-4 sm:py-5">
       <div className="flex w-full items-center justify-between">
-
-        {/* LEFT SECTION */}
         <div className="flex items-center gap-6 md:gap-10">
-
-          {/* LOGO */}
-          <a
-            href="/"
-            aria-label="Nexora Home"
+          <button
+            type="button"
+            onClick={() => router.push("/")}
             className="flex items-center"
           >
             <Image
@@ -29,166 +75,72 @@ const Navbar = () => {
               width={52}
               height={52}
               priority
-              className="
-                h-11
-                w-11
-                object-contain
-                transition-transform
-                duration-300
-                hover:scale-105
-                sm:h-12
-                sm:w-12
-              "
+              className="h-11 w-11 object-contain transition-transform duration-300 hover:scale-105 sm:h-12 sm:w-12"
             />
-          </a>
+          </button>
 
-          {/* DESKTOP NAVIGATION */}
           <div className="hidden items-center gap-1 md:flex">
-
-            <a
-              href="#features"
-              className="
-                rounded-lg
-                px-4
-                py-2
-                text-sm
-                font-medium
-                text-white/75
-                transition-colors
-                duration-300
-                hover:text-blue-400
-              "
+            <button
+              type="button"
+              onClick={() => router.push("/Dashboard")}
+              className="rounded-lg px-4 py-2 text-sm font-medium text-white transition duration-300 hover:bg-white/[0.05] hover:text-blue-400"
             >
-              Features
-            </a>
+              Dashboard
+            </button>
 
-            <a
-              href="#pricing"
-              className="
-                rounded-lg
-                px-4
-                py-2
-                text-sm
-                font-medium
-                text-white/75
-                transition-colors
-                duration-300
-                hover:text-blue-400
-              "
-            >
-              Pricing
-            </a>
-
-            <a
-              href="#testimonials"
-              className="
-                rounded-lg
-                px-4
-                py-2
-                text-sm
-                font-medium
-                text-white/75
-                transition-colors
-                duration-300
-                hover:text-blue-400
-              "
+            <button
+              type="button"
+              onClick={() => router.push("/Testimonials")}
+              className="rounded-lg px-4 py-2 text-sm font-medium text-white transition duration-300 hover:bg-white/[0.05] hover:text-blue-400"
             >
               Testimonials
-            </a>
+            </button>
 
-            <a
-              href="#faq"
-              className="
-                rounded-lg
-                px-4
-                py-2
-                text-sm
-                font-medium
-                text-white/75
-                transition-colors
-                duration-300
-                hover:text-blue-400
-              "
+            <button
+              type="button"
+              onClick={() => router.push("/FAQ")}
+              className="rounded-lg px-4 py-2 text-sm font-medium text-white transition duration-300 hover:bg-white/[0.05] hover:text-blue-400"
             >
               FAQ
-            </a>
-
+            </button>
           </div>
         </div>
 
-        {/* DESKTOP ACTIONS */}
         <div className="hidden items-center gap-3 sm:flex">
+          {userName ? (
+            <button
+              type="button"
+              onClick={() => router.push("/Dashboard")}
+              className="rounded-lg border border-white/[0.08] bg-white/[0.03] px-4 py-2 text-sm font-medium text-white transition duration-300 hover:border-blue-500/20 hover:bg-blue-500/[0.08] hover:text-blue-400"
+            >
+              {userName}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => router.push("/SignIn")}
+              className="rounded-lg border border-white/[0.08] bg-white/[0.03] px-4 py-2 text-sm font-medium text-white transition duration-300 hover:border-blue-500/20 hover:bg-blue-500/[0.08] hover:text-blue-400"
+            >
+              Login
+            </button>
+          )}
 
-          {/* LOGIN */}
-          <button
-            type="button"
-            className="
-              rounded-xl
-              border
-              border-white/15
-              px-5
-              py-2.5
-              text-sm
-              font-medium
-              text-white
-              transition-all
-              duration-300
-              hover:border-blue-400/60
-              hover:text-blue-400
-            "
-          >
-            Login
-          </button>
-
-          {/* GET STARTED */}
-          <button
-            type="button"
-            className="
-              rounded-xl
-              bg-blue-600
-              px-6
-              py-2.5
-              text-sm
-              font-semibold
-              text-white
-              shadow-lg
-              shadow-blue-600/25
-              transition-all
-              duration-300
-              hover:-translate-y-0.5
-              hover:bg-blue-500
-              hover:shadow-xl
-              hover:shadow-blue-500/30
-              active:translate-y-0
-            "
-          >
-            Get Started
-          </button>
-
+          {userName && (
+            <button
+              type="button"
+              onClick={logout}
+              className="rounded-lg px-4 py-2 text-sm font-medium text-white/70 transition duration-300 hover:bg-white/[0.05] hover:text-red-400"
+            >
+              Logout
+            </button>
+          )}
         </div>
 
-        {/* MOBILE MENU BUTTON */}
         <button
           type="button"
-          onClick={() => setOpen((prev) => !prev)}
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          className="
-            flex
-            h-10
-            w-10
-            items-center
-            justify-center
-            rounded-xl
-            border
-            border-white/15
-            text-white
-            transition-colors
-            duration-300
-            hover:border-blue-400/60
-            hover:text-blue-400
-            sm:hidden
-          "
+          onClick={() => setOpen(!open)}
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.03] text-white transition duration-300 hover:border-blue-500/20 hover:text-blue-400 sm:hidden"
+          aria-label="Toggle menu"
         >
           {open ? (
             <CloseIcon fontSize="small" />
@@ -196,149 +148,79 @@ const Navbar = () => {
             <MenuIcon fontSize="small" />
           )}
         </button>
-
       </div>
 
-      {/* MOBILE MENU */}
       {open && (
-        <div
-          className="
-            absolute
-            left-0
-            right-0
-            top-full
-            z-50
-            mt-3
-            overflow-hidden
-            rounded-2xl
-            border
-            border-white/10
-            bg-[#080b2a]/95
-            p-4
-            shadow-2xl
-            backdrop-blur-xl
-            sm:hidden
-          "
-        >
-
-          {/* LINKS */}
+        <div className="absolute left-0 right-0 top-full mt-2 rounded-2xl border border-white/[0.08] bg-[#0B1120] p-3 shadow-2xl sm:hidden">
           <div className="flex flex-col">
-
-            <a
-              href="#features"
-              onClick={closeMenu}
-              className="
-                px-3
-                py-3
-                text-sm
-                font-medium
-                text-white/75
-                transition-colors
-                duration-300
-                hover:text-blue-400
-              "
+            <button
+              type="button"
+              onClick={() => {
+                router.push("/Dashboard");
+                closeMenu();
+              }}
+              className="rounded-xl px-4 py-3 text-left text-sm font-medium text-white transition duration-300 hover:bg-white/[0.05] hover:text-blue-400"
             >
-              Features
-            </a>
+              Dashboard
+            </button>
 
-            <a
-              href="#pricing"
-              onClick={closeMenu}
-              className="
-                px-3
-                py-3
-                text-sm
-                font-medium
-                text-white/75
-                transition-colors
-                duration-300
-                hover:text-blue-400
-              "
-            >
-              Pricing
-            </a>
-
-            <a
-              href="#testimonials"
-              onClick={closeMenu}
-              className="
-                px-3
-                py-3
-                text-sm
-                font-medium
-                text-white/75
-                transition-colors
-                duration-300
-                hover:text-blue-400
-              "
+            <button
+              type="button"
+              onClick={() => {
+                router.push("/Testimonials");
+                closeMenu();
+              }}
+              className="rounded-xl px-4 py-3 text-left text-sm font-medium text-white transition duration-300 hover:bg-white/[0.05] hover:text-blue-400"
             >
               Testimonials
-            </a>
+            </button>
 
-            <a
-              href="#faq"
-              onClick={closeMenu}
-              className="
-                px-3
-                py-3
-                text-sm
-                font-medium
-                text-white/75
-                transition-colors
-                duration-300
-                hover:text-blue-400
-              "
+            <button
+              type="button"
+              onClick={() => {
+                router.push("/FAQ");
+                closeMenu();
+              }}
+              className="rounded-xl px-4 py-3 text-left text-sm font-medium text-white transition duration-300 hover:bg-white/[0.05] hover:text-blue-400"
             >
               FAQ
-            </a>
-
-          </div>
-
-          {/* MOBILE ACTIONS */}
-          <div className="mt-4 flex gap-2 border-t border-white/10 pt-4">
-
-            <button
-              type="button"
-              onClick={closeMenu}
-              className="
-                flex-1
-                rounded-xl
-                border
-                border-white/15
-                py-2.5
-                text-sm
-                font-medium
-                text-white
-                transition-all
-                duration-300
-                hover:border-blue-400/60
-                hover:text-blue-400
-              "
-            >
-              Login
             </button>
 
-            <button
-              type="button"
-              onClick={closeMenu}
-              className="
-                flex-1
-                rounded-xl
-                bg-blue-600
-                py-2.5
-                text-sm
-                font-semibold
-                text-white
-                shadow-lg
-                shadow-blue-600/20
-                transition-all
-                duration-300
-                hover:bg-blue-500
-              "
-            >
-              Get Started
-            </button>
+            <div className="my-2 h-px bg-white/[0.06]" />
 
+            {userName ? (
+              <>
+                <button
+                  type="button"
+                  onClick={() => {
+                    router.push("/Dashboard");
+                    closeMenu();
+                  }}
+                  className="rounded-xl px-4 py-3 text-left text-sm font-medium text-white transition duration-300 hover:bg-white/[0.05] hover:text-blue-400"
+                >
+                  {userName}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="rounded-xl px-4 py-3 text-left text-sm font-medium text-white/70 transition duration-300 hover:bg-red-500/[0.08] hover:text-red-400"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  router.push("/SignIn");
+                  closeMenu();
+                }}
+                className="rounded-xl px-4 py-3 text-left text-sm font-medium text-white transition duration-300 hover:bg-white/[0.05] hover:text-blue-400"
+              >
+                Login
+              </button>
+            )}
           </div>
         </div>
       )}

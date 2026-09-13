@@ -6,30 +6,29 @@ import {
   CheckCircle2,
   FileText,
   Search,
-  Sparkles,
   X,
 } from "lucide-react";
 
 const featureItems = [
-  {
-    icon: Sparkles,
-    title: "AI-Powered",
-    description: "Job Matching",
-  },
-  {
-    icon: FileText,
-    title: "Tailored Resumes",
-    description: "& Cover Letters",
-  },
   {
     icon: BriefcaseBusiness,
     title: "Track Your",
     description: "Applications",
   },
   {
+    icon: FileText,
+    title: "Build Your",
+    description: "Resume",
+  },
+  {
     icon: BarChart3,
-    title: "Detailed Analytics",
-    description: "& Insights",
+    title: "View Your",
+    description: "Progress",
+  },
+  {
+    icon: CheckCircle2,
+    title: "Stay",
+    description: "Organized",
   },
 ];
 
@@ -58,22 +57,22 @@ export default function Home() {
         <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10">
           <div className="max-w-2xl">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-400/15 bg-blue-500/[0.06] px-3 py-1.5 text-[11px] font-medium text-blue-300 sm:mb-6 sm:text-xs">
-              <Sparkles size={13} />
-              AI-powered career assistant
+              <BriefcaseBusiness size={13} />
+              Your career workspace
             </div>
 
             <h1 className="text-4xl font-bold leading-[1.08] tracking-[-0.03em] sm:text-5xl lg:text-[58px]">
-              Land Your Dream Job
+              Take Control of
               <br />
               <span className="bg-gradient-to-r from-blue-400 via-blue-500 to-violet-500 bg-clip-text text-transparent">
-                with AI
+                Your Job Search
               </span>
             </h1>
 
             <p className="mt-5 max-w-xl text-sm leading-6 text-white/65 sm:mt-6 sm:text-base sm:leading-7 lg:text-lg">
-              CareerCopilot helps you find better opportunities, match your
-              resume with job descriptions, and create tailored resumes and
-              cover letters — all powered by AI.
+              Nexora helps you organize job applications, build your
+              professional resume, and keep track of your career progress
+              in one focused workspace.
             </p>
 
             <div
@@ -141,7 +140,7 @@ export default function Home() {
                     </div>
 
                     <span className="text-[10px] font-semibold">
-                      CareerCopilot
+                      Nexora
                     </span>
                   </div>
 
@@ -150,10 +149,6 @@ export default function Home() {
                       "Overview",
                       "Applications",
                       "Resume",
-                      "AI Analysis",
-                      "Analytics",
-                      "Billing",
-                      "Settings",
                     ].map((item, index) => (
                       <div
                         key={item}
@@ -177,7 +172,7 @@ export default function Home() {
                       </p>
 
                       <h3 className="mt-1 text-sm font-semibold sm:text-base">
-                        Good morning, Alex
+                        Good morning
                       </h3>
                     </div>
 
@@ -188,37 +183,33 @@ export default function Home() {
                     <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-3.5 sm:p-4">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] text-white/55">
-                          Match Score
+                          Applications
                         </span>
 
                         <span className="text-[9px] text-white/35">
-                          Job #241
+                          This month
                         </span>
                       </div>
 
-                      <div className="mx-auto mt-4 flex h-24 w-24 items-center justify-center rounded-full border-[8px] border-blue-500/15 sm:h-28 sm:w-28 sm:border-[10px]">
-                        <div className="flex h-[70px] w-[70px] items-center justify-center rounded-full border-[6px] border-cyan-400 border-r-blue-500 border-b-violet-500 sm:h-[82px] sm:w-[82px]">
-                          <div className="text-center">
-                            <div className="text-xl font-bold sm:text-2xl">
-                              92%
-                            </div>
+                      <div className="mt-5">
+                        <div className="text-3xl font-bold sm:text-4xl">
+                          24
+                        </div>
 
-                            <div className="text-[8px] text-white/35">
-                              Strong match
-                            </div>
-                          </div>
+                        <div className="mt-2 text-[9px] text-emerald-400">
+                          Applications tracked
                         </div>
                       </div>
 
-                      <div className="mt-3 text-center text-[9px] text-emerald-400">
-                        Great fit for this role
+                      <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/5">
+                        <div className="h-full w-[72%] rounded-full bg-gradient-to-r from-blue-500 to-violet-500" />
                       </div>
                     </div>
 
                     <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-3.5 sm:p-4">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] text-white/55">
-                          Skills Matched
+                          Skills
                         </span>
 
                         <CheckCircle2
@@ -247,24 +238,25 @@ export default function Home() {
                   <div className="mt-3 rounded-2xl border border-white/10 bg-white/[0.025] p-3.5 sm:p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400">
-                          <Sparkles size={13} />
+                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
+                          <FileText size={13} />
                         </div>
 
                         <span className="text-[10px] font-medium">
-                          AI Generated Cover Letter
+                          Resume
                         </span>
                       </div>
 
-                      <X size={13} className="text-white/30" />
+                      <X
+                        size={13}
+                        className="text-white/30"
+                      />
                     </div>
 
                     <p className="mt-3 text-[9px] leading-5 text-white/40 sm:text-[10px]">
-                      Dear Hiring Manager, I am excited to apply for this
-                      opportunity. My experience building modern web
-                      applications aligns closely with the role requirements
-                      and I am confident I can bring meaningful value to your
-                      team...
+                      Build and maintain a professional resume with your
+                      personal information, experience, education, skills,
+                      projects and career highlights.
                     </p>
 
                     <div className="mt-3 flex items-center justify-between">
@@ -275,7 +267,7 @@ export default function Home() {
                       </div>
 
                       <span className="text-[8px] text-blue-400">
-                        AI optimized
+                        Resume Builder
                       </span>
                     </div>
                   </div>

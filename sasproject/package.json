@@ -11,14 +11,25 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@google/genai": "^2.22.0",
+    "@hookform/resolvers": "^5.9.1",
     "@mui/icons-material": "^9.4.0",
     "@mui/material": "^9.4.0",
+    "@mui/x-charts": "^9.13.0",
+    "@mui/x-data-grid": "^9.13.0",
+    "@react-pdf/renderer": "^4.9.0",
+    "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.116.0",
+    "dayjs": "^1.11.23",
+    "docx": "^9.7.1",
+    "framer-motion": "^13.2.0",
     "lucide-react": "^1.43.0",
     "next": "16.3.4",
     "next-auth": "^5.0.0-beta.32",
+    "openai": "^7.15.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "recharts": "^3.10.1"
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^5.15.13",

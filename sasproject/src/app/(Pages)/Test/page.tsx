@@ -3,14 +3,22 @@
 import { supabase } from "@/Lib/Supabase";
 
 export default function TestPage() {
-  const testConnection = async () => {
-    const { data, error } = await supabase.auth.getSession();
 
-    console.log(data);
-    console.log(error);
+  const testConnection = async () => {
+
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .limit(1);
+
+
+    console.log("DATA:", data);
+    console.log("ERROR:", error);
+
   };
 
-return (
+
+  return (
     <div className="p-10">
       <button
         onClick={testConnection}
