@@ -23,6 +23,10 @@ import {
   TableRow,
   TextField,
   Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 import { useEffect, useMemo, useState } from "react";
@@ -43,11 +47,14 @@ export default function ApplicationList({
   status,
 }: ApplicationListProps) {
 
+
   const [applications, setApplications] =
     useState<Application[]>([]);
 
+
   const [loading, setLoading] =
     useState(true);
+
 
   const [error, setError] =
     useState("");
@@ -70,11 +77,12 @@ export default function ApplicationList({
     try {
 
       const {
-        data: { user },
+        data:{user},
       } = await supabase.auth.getUser();
 
 
-      if (!user) {
+
+      if(!user){
 
         setError(
           "Please sign in to view your applications."
@@ -88,8 +96,9 @@ export default function ApplicationList({
 
       const {
         data,
-        error: fetchError,
-      } = await supabase
+        error:fetchError,
+      } =
+      await supabase
         .from("applications")
         .select("*")
         .eq(
@@ -118,7 +127,6 @@ export default function ApplicationList({
       setApplications(
         (data as Application[]) ?? []
       );
-
 
 
     } catch {
@@ -151,21 +159,24 @@ export default function ApplicationList({
 
   const filteredApplications = useMemo(()=>{
 
+
     return applications.filter(
       (application)=>{
+
 
         const value =
           search.toLowerCase();
 
 
+
         const matchesSearch =
           application.company
-            .toLowerCase()
-            .includes(value)
+          .toLowerCase()
+          .includes(value)
           ||
           application.job_title
-            .toLowerCase()
-            .includes(value);
+          .toLowerCase()
+          .includes(value);
 
 
 
@@ -181,6 +192,7 @@ export default function ApplicationList({
           matchesStatus
         );
 
+
       }
     );
 
@@ -190,7 +202,6 @@ export default function ApplicationList({
     search,
     status
   ]);
-
 
 
 
@@ -210,8 +221,6 @@ export default function ApplicationList({
 
 
 
-
-
   const handleUpdate = async()=>{
 
 
@@ -223,21 +232,28 @@ export default function ApplicationList({
     const {
       data,
       error:updateError
-    } = await supabase
+    } =
+    await supabase
       .from("applications")
       .update({
 
-        company:selectedApplication.company,
+        company:
+          selectedApplication.company,
 
-        job_title:selectedApplication.job_title,
+        job_title:
+          selectedApplication.job_title,
 
-        location:selectedApplication.location,
+        location:
+          selectedApplication.location,
 
-        status:selectedApplication.status,
+        status:
+          selectedApplication.status,
 
-        applied_date:selectedApplication.applied_date,
+        applied_date:
+          selectedApplication.applied_date,
 
-        job_url:selectedApplication.job_url,
+        job_url:
+          selectedApplication.job_url,
 
       })
       .eq(
@@ -246,6 +262,7 @@ export default function ApplicationList({
       )
       .select()
       .single();
+
 
 
 
@@ -264,19 +281,16 @@ export default function ApplicationList({
         current.map(
           item =>
             item.id === data.id
-              ? data
-              : item
+            ? data
+            : item
         )
     );
-
 
 
     setOpenEdit(false);
 
 
   };
-
-
 
 
 
@@ -293,7 +307,6 @@ export default function ApplicationList({
       );
 
 
-
     if(!confirmed)
       return;
 
@@ -301,7 +314,8 @@ export default function ApplicationList({
 
     const {
       error:deleteError
-    } = await supabase
+    } =
+    await supabase
       .from("applications")
       .delete()
       .eq(
@@ -336,10 +350,9 @@ export default function ApplicationList({
 
 
 
-
   if(loading){
 
-    return(
+    return (
 
       <Box
         sx={{
@@ -368,7 +381,7 @@ export default function ApplicationList({
 
   if(error){
 
-    return(
+    return (
 
       <Alert
         severity="error"
@@ -383,17 +396,21 @@ export default function ApplicationList({
 
   }  return (
     <>
+
       <TableContainer
         component={Paper}
         sx={{
-          backgroundColor: "#111827",
-          border: "1px solid #1E293B",
-          borderRadius: "16px",
-          overflowX: "auto",
+          backgroundColor:"#111827",
+          border:"1px solid #1E293B",
+          borderRadius:"16px",
+          overflowX:"auto",
         }}
       >
+
         <Table>
+
           <TableHead>
+
             <TableRow>
 
               <TableCell
@@ -405,6 +422,7 @@ export default function ApplicationList({
                 Company
               </TableCell>
 
+
               <TableCell
                 sx={{
                   color:"#64748B",
@@ -413,6 +431,7 @@ export default function ApplicationList({
               >
                 Position
               </TableCell>
+
 
               <TableCell
                 sx={{
@@ -423,6 +442,7 @@ export default function ApplicationList({
                 Location
               </TableCell>
 
+
               <TableCell
                 sx={{
                   color:"#64748B",
@@ -432,6 +452,7 @@ export default function ApplicationList({
                 Status
               </TableCell>
 
+
               <TableCell
                 sx={{
                   color:"#64748B",
@@ -440,6 +461,7 @@ export default function ApplicationList({
               >
                 Applied
               </TableCell>
+
 
               <TableCell
                 align="right"
@@ -451,157 +473,154 @@ export default function ApplicationList({
                 Actions
               </TableCell>
 
+
             </TableRow>
+
           </TableHead>
+
 
 
           <TableBody>
 
-            {filteredApplications.length === 0 ? (
 
-              <TableRow>
-
-                <TableCell colSpan={6}>
-
-                  <Box
-                    sx={{
-                      py:7,
-                      textAlign:"center",
-                    }}
-                  >
-
-                    <Typography
-                      sx={{
-                        color:"#F8FAFC",
-                        fontWeight:600,
-                        fontSize:"17px",
-                      }}
-                    >
-                      No applications found
-                    </Typography>
+          {
+          filteredApplications.length === 0 ? (
 
 
-                    <Typography
-                      sx={{
-                        color:"#64748B",
-                        mt:1,
-                      }}
-                    >
-                      Add your first job application to get started.
-                    </Typography>
+            <TableRow>
 
-                  </Box>
+              <TableCell colSpan={6}>
 
-                </TableCell>
 
-              </TableRow>
-
-            ) : (
-
-              filteredApplications.map(
-                (application)=>(
-
-                <TableRow
-                  key={application.id}
+                <Box
                   sx={{
-                    "&:hover":{
-                      backgroundColor:"#0F172A",
-                    },
+                    py:7,
+                    textAlign:"center",
                   }}
                 >
 
-                  <TableCell
+                  <Typography
                     sx={{
                       color:"#F8FAFC",
                       fontWeight:600,
-                      whiteSpace:"nowrap",
+                      fontSize:"17px",
                     }}
                   >
-                    {application.company}
-                  </TableCell>
+                    No applications found
+                  </Typography>
 
 
-                  <TableCell
+                  <Typography
                     sx={{
-                      color:"#CBD5E1",
-                      minWidth:180,
+                      color:"#64748B",
+                      mt:1,
                     }}
                   >
-                    {application.job_title}
-                  </TableCell>
+                    Add your first job application to get started.
+                  </Typography>
 
 
-                  <TableCell
+                </Box>
+
+
+              </TableCell>
+
+
+            </TableRow>
+
+
+          ) : (
+
+
+            filteredApplications.map(
+              (application)=>(
+
+
+              <TableRow
+                key={application.id}
+                sx={{
+                  "&:hover":{
+                    backgroundColor:"#0F172A",
+                  },
+                }}
+              >
+
+
+                <TableCell
+                  sx={{
+                    color:"#F8FAFC",
+                    fontWeight:600,
+                    whiteSpace:"nowrap",
+                  }}
+                >
+                  {application.company}
+                </TableCell>
+
+
+
+                <TableCell
+                  sx={{
+                    color:"#CBD5E1",
+                    minWidth:180,
+                  }}
+                >
+                  {application.job_title}
+                </TableCell>
+
+
+
+                <TableCell
+                  sx={{
+                    color:"#94A3B8",
+                  }}
+                >
+                  {application.location || "—"}
+                </TableCell>
+
+
+
+                <TableCell>
+
+                  <ApplicationStatusChip
+                    status={application.status}
+                  />
+
+                </TableCell>
+
+
+
+                <TableCell
+                  sx={{
+                    color:"#94A3B8",
+                    whiteSpace:"nowrap",
+                  }}
+                >
+                  {application.applied_date || "—"}
+                </TableCell>
+
+
+
+                <TableCell align="right">
+
+
+                  <Box
                     sx={{
-                      color:"#94A3B8",
+                      display:"flex",
+                      justifyContent:"flex-end",
+                      alignItems:"center",
+                      gap:0.5,
                     }}
                   >
-                    {application.location || "—"}
-                  </TableCell>
 
 
-                  <TableCell>
-
-                    <ApplicationStatusChip
-                      status={application.status}
-                    />
-
-                  </TableCell>
-
-
-                  <TableCell
-                    sx={{
-                      color:"#94A3B8",
-                      whiteSpace:"nowrap",
-                    }}
-                  >
-                    {application.applied_date || "—"}
-                  </TableCell>
-
-
-
-                  <TableCell align="right">
-
-                    <Box
-                      sx={{
-                        display:"flex",
-                        justifyContent:"flex-end",
-                        alignItems:"center",
-                        gap:0.5,
-                      }}
-                    >
-
-
-                      {application.job_url && (
-
-                        <IconButton
-                          component="a"
-                          href={application.job_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          sx={{
-                            color:"#94A3B8",
-                            "&:hover":{
-                              color:"#60A5FA",
-                              backgroundColor:"#1E293B",
-                            },
-                          }}
-                        >
-
-                          <OpenInNewIcon
-                            fontSize="small"
-                          />
-
-                        </IconButton>
-
-                      )}
-
-
+                    {
+                    application.job_url && (
 
                       <IconButton
-                        onClick={() =>
-                          handleEdit(application)
-                        }
+                        component="a"
+                        href={application.job_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         sx={{
                           color:"#94A3B8",
                           "&:hover":{
@@ -611,51 +630,80 @@ export default function ApplicationList({
                         }}
                       >
 
-                        <EditOutlinedIcon
+                        <OpenInNewIcon
                           fontSize="small"
                         />
 
                       </IconButton>
 
+                    )
+                    }
 
 
 
-                      <IconButton
-                        onClick={() =>
-                          handleDelete(application.id)
-                        }
-                        sx={{
-                          color:"#94A3B8",
-                          "&:hover":{
-                            color:"#F87171",
-                            backgroundColor:"#1E293B",
-                          },
-                        }}
-                      >
+                    <IconButton
+                      onClick={() =>
+                        handleEdit(application)
+                      }
+                      sx={{
+                        color:"#94A3B8",
+                        "&:hover":{
+                          color:"#60A5FA",
+                          backgroundColor:"#1E293B",
+                        },
+                      }}
+                    >
 
-                        <DeleteOutlineOutlinedIcon
-                          fontSize="small"
-                        />
+                      <EditOutlinedIcon
+                        fontSize="small"
+                      />
 
-                      </IconButton>
-
-
-                    </Box>
-
-                  </TableCell>
+                    </IconButton>
 
 
-                </TableRow>
 
-              ))
+                    <IconButton
+                      onClick={() =>
+                        handleDelete(application.id)
+                      }
+                      sx={{
+                        color:"#94A3B8",
+                        "&:hover":{
+                          color:"#F87171",
+                          backgroundColor:"#1E293B",
+                        },
+                      }}
+                    >
 
-            )}
+                      <DeleteOutlineOutlinedIcon
+                        fontSize="small"
+                      />
+
+                    </IconButton>
+
+
+                  </Box>
+
+
+                </TableCell>
+
+
+              </TableRow>
+
+
+            ))
+
+          )}
+
 
           </TableBody>
 
+
         </Table>
 
+
       </TableContainer>
+
 
 
 
@@ -666,6 +714,7 @@ export default function ApplicationList({
         fullWidth
         maxWidth="sm"
       >
+
 
         <DialogTitle>
           Edit Application
@@ -681,6 +730,7 @@ export default function ApplicationList({
             mt:1,
           }}
         >
+
 
           <TextField
             label="Company"
@@ -727,18 +777,59 @@ export default function ApplicationList({
 
 
 
-          <TextField
-            label="Status"
-            value={
-              selectedApplication?.status || ""
-            }
-            onChange={(e)=>
-              setSelectedApplication({
-                ...selectedApplication!,
-                status:e.target.value,
-              })
-            }
-          />
+          <FormControl fullWidth>
+
+
+            <InputLabel>
+              Status
+            </InputLabel>
+
+
+
+            <Select
+              label="Status"
+              value={
+                selectedApplication?.status || ""
+              }
+              onChange={(e)=>
+                setSelectedApplication({
+
+                  ...selectedApplication!,
+
+                  status:
+                    e.target.value as Application["status"],
+
+                })
+              }
+            >
+
+
+              <MenuItem value="Applied">
+                Applied
+              </MenuItem>
+
+
+              <MenuItem value="Interview">
+                Interview
+              </MenuItem>
+
+
+              <MenuItem value="Offer">
+                Offer
+              </MenuItem>
+
+
+              <MenuItem value="Rejected">
+                Rejected
+              </MenuItem>
+
+
+            </Select>
+
+
+          </FormControl>
+
+
 
 
 
@@ -757,6 +848,7 @@ export default function ApplicationList({
 
 
 
+
           <TextField
             label="Job URL"
             value={
@@ -771,18 +863,22 @@ export default function ApplicationList({
           />
 
 
+
         </DialogContent>
+
 
 
 
 
         <DialogActions>
 
+
           <Button
             onClick={() => setOpenEdit(false)}
           >
             Cancel
           </Button>
+
 
 
           <Button
@@ -798,6 +894,8 @@ export default function ApplicationList({
 
       </Dialog>
 
+
     </>
   );
+
 }
